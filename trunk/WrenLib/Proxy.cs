@@ -13,7 +13,7 @@ namespace WrenLib
 {
     //server
     public delegate void InitDelegate(ProxySocket Base, uint Serial);
-    public delegate void SerialDelegate(ProxySocket Socket, uint Serial, NewProxy Proxy);
+    public delegate void SerialDelegate(ProxySocket Socket, uint Serial, NewProxy Proxy, uint PlayerSerial);
     public delegate void OnGameLogin(ProxySocket Socket, uint Serial, NewProxy Proxy, string CharacterName);
     public delegate void OnPacketEvent(ProxySocket Socket, uint Serial, NewProxy Proxy, ref MemoryStream Buffer);
     public class NewProxy
@@ -96,7 +96,7 @@ namespace WrenLib
                 case 0x0B:
                     {
                         Socket.LoggedIn = false;
-                        OnDisconnect(Socket, Socket.ConnectedSocket.ID, this);
+                        OnDisconnect(Socket, Socket.ConnectedSocket.ID, this, Socket.Serial.Reverse());
                     } break;
                 case 0x03:
                     {
@@ -117,7 +117,7 @@ namespace WrenLib
                         if (Socket.ID != 0)
                             Clients.Add(Socket.ID, Socket);
                         Socket.ConnectedSocket.SendPacketRaw(Socket.PacketData);
-                        Socket.Server.OnConnect(Socket, Socket.ConnectedSocket.ID, this);
+                        Socket.Server.OnConnect(Socket, Socket.ConnectedSocket.ID, this, Socket.Serial.Reverse());
                         return;
                     }
                 default: break;
@@ -153,7 +153,7 @@ namespace WrenLib
                     Redirect = new IPEndPoint(new IPAddress(Reader.ReadBytes(4).Reverse().ToArray()), (Reader.ReadByte() << 8) | Reader.ReadByte());
                     PacketStream.Seek(-6, SeekOrigin.Current);
                     Writer.Write(new byte[] { 1, 0, 0, 127, 0x0A, 0x32 });
-                    Socket.Server.OnConnect(Socket, Socket.ConnectedSocket.ID, this);
+                    Socket.Server.OnConnect(Socket, Socket.ConnectedSocket.ID, this, Socket.Serial.Reverse());
                     break;
                 #endregion
                 #region Aquire Serial
@@ -162,9 +162,10 @@ namespace WrenLib
                         TransformStream(Socket, ref PacketStream, ref Reader, ref Writer);
                         PacketStream.Seek(1, SeekOrigin.Current);
                         Socket.Serial = Reader.ReadUInt32();
+                        uint Serial = Socket.Serial.Reverse();
                         Socket.ConnectedSocket.Serial = Socket.Serial;
                         Socket.LoggedIn = true;
-                        OnGameServerConnect(Socket, Socket.ConnectedSocket.ID, this);
+                        OnGameServerConnect(Socket, Socket.ConnectedSocket.ID, this, Serial);
                         TransformStream(Socket, ref PacketStream, ref Reader, ref Writer);
                     } break;
                 #endregion
@@ -213,7 +214,7 @@ namespace WrenLib
                 catch { }
                 try { Socket.ConnectedSocket.Disconnect(false); }
                 catch { }
-                Socket.Server.OnDisconnect(Socket, Socket.ConnectedSocket.ID, this);
+                Socket.Server.OnDisconnect(Socket, Socket.ConnectedSocket.ID, this, Socket.Serial.Reverse());
                 if (Socket.ID == 0)
                     return;
                 this.Clients.Remove(Socket.ID);

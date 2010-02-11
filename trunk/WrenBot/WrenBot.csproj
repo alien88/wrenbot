@@ -57,12 +57,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BotClient.cs" />
+    <Compile Include="BotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BotForm.Designer.cs">
+      <DependentUpon>BotForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions\PlayerChat.cs" />
+    <Compile Include="Functions\TargetMonster.cs" />
+    <Compile Include="Hunting Scripts\BasherScript.cs" />
+    <Compile Include="Hunting Scripts\CasterScript.cs" />
     <Compile Include="Net\ClientStructs\Assail.cs" />
     <Compile Include="Net\ClientStructs\ClickEntity.cs" />
     <Compile Include="Net\ClientStructs\Direction.cs" />
@@ -122,6 +132,9 @@
     <Compile Include="PathFinding\PriorityQueue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BotForm.resx">
+      <DependentUpon>BotForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
