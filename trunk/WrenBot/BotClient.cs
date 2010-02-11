@@ -19,6 +19,9 @@ namespace WrenBot
         public SetRoles RolesForm;
         public Form1 Form;
         public BlackMagic Magic;
+        public uint AttackTargetSerial;
+        public uint ItemTargetSerial;
+        public int HPPercent;
         #endregion
 
         #region Accessors
@@ -96,6 +99,22 @@ namespace WrenBot
         #endregion
 
         #region Methods
+        public MapEntity EntityFromSerial(uint Entity)
+        {
+            return Aisling.Monsters.Find(((Monster o) => o.Serial == Entity));
+        }
+
+        public uint SerialFromEntity(MapEntity Entity)
+        {
+            return Aisling.Monsters.Find((Monster o) => o.Serial == Entity.Serial).Serial;
+        }
+
+        public void WaitForMapLoad()
+        {
+            try { while (!Aisling.Map.LoadMatrix()) { System.Threading.Thread.Sleep(100); } } catch { }
+        }
         #endregion
+
+
     }
 }
