@@ -392,8 +392,6 @@ namespace WrenBot.Types
         {
             get
             {
-                try
-                {
                     byte[,] Matrix = new byte[Width + 1, Height + 1];
                     for (int y = 0; y < Height; y++)
                         for (int x = 0; x < Width; x++)
@@ -402,6 +400,7 @@ namespace WrenBot.Types
                     foreach (MapEntity Ent in MapEntities)
                         if (Ent.EntityType == MapEntity.Type.Player || Ent.EntityType == MapEntity.Type.Monster || Ent.EntityType == MapEntity.Type.NPC)
                             Matrix[Ent.Location.X, Ent.Location.Y] = 0x00;
+                 /*
                     switch (Socket.Aisling.Location.Direction)
                     {
                         case FaceDirection.Up:
@@ -425,9 +424,10 @@ namespace WrenBot.Types
                                     Matrix[Socket.Aisling.Location.X + 1, Socket.Aisling.Location.Y] = 0x30;
                             } break;
                     }
+                  * 
+                  */
                     return Matrix;
-                }
-                catch { return null; }
+
             }
             set { }
         }

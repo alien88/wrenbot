@@ -5,6 +5,7 @@ using System.Text;
 using WrenLib;
 using WrenBot.Types;
 using Magic;
+using WrenBot.PathFinding;
 
 namespace WrenBot
 {
@@ -19,12 +20,48 @@ namespace WrenBot
         public SetRoles RolesForm;
         public Form1 Form;
         public BlackMagic Magic;
-        public uint AttackTargetSerial;
+        public uint AttackTargetSerial { get; set; }
         public uint ItemTargetSerial;
         public int HPPercent;
+        public BotForm BotForm;
+        public uint SpellTarget { get; set; }
+        public uint LootTarget { get; set; }
+        public List<string> GroupMembers { get; set; }
+        public List<Point> RequestedTileInfo = new List<Point>();
+        public List<ushort> LootableItems = new List<ushort>(new ushort[] {
+                Item.Icons.GoldPile,
+                Item.Icons.SilverPile
+            }
+        );
+        public List<ushort> BlackListMons = new List<ushort>();
+        public Monster MonsterTarget
+        {
+            get
+            {
+                try
+                {
+                    if (Aisling.Map.Entities.ContainsKey(AttackTargetSerial))
+                        return (Monster)Aisling.Map.Entities[AttackTargetSerial];
+                }
+                catch { return null; }
+                return null;
+            }
+            set { }
+        }
         #endregion
 
         #region Accessors
+        public uint SocketSerial
+        {
+            get
+            {
+                foreach (System.Collections.Generic.KeyValuePair<uint, ProxySocket> Sockets in Proxy.Clients)
+                    if (Client.Socket.ConnectedSocket.ID == Sockets.Value.ConnectedSocket.ID)
+                        return Sockets.Value.Serial;
+                return 0;
+            }
+        }
+
         public BotClient Client
         {
             get { return Form.Clients[Socket.ConnectedSocket.ID]; }
@@ -54,6 +91,7 @@ namespace WrenBot
             this.Roles = new ClientRoles();
             this.RolesForm = new SetRoles(this.Socket);
             this.RolesForm.Set += new RoleEvent(SetRole);
+            this.BotForm = new BotForm();
         }
         #endregion
 
@@ -113,8 +151,61 @@ namespace WrenBot
         {
             try { while (!Aisling.Map.LoadMatrix()) { System.Threading.Thread.Sleep(100); } } catch { }
         }
+
+        public bool IsClient(string Name)
+        {
+            try
+            {
+                uint[] ClientSerials = null;
+                lock (Clients)
+                {
+                    ClientSerials = new uint[Clients.Count];
+                    Clients.Keys.CopyTo(ClientSerials, 0);
+                }
+                foreach (uint Serial in ClientSerials)
+                {
+                    if ((BotClients.ContainsKey(Serial)) && BotClients[Serial].Aisling.Name.ToLower() == Name.ToLower())
+                        return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+
+        public bool HasPathTo(Location Location)
+        {
+            return Client.Aisling.Map.FindPath(Client.Aisling.Location, Location, true, Proxy, Client.Form) != null;
+        }
+
+
         #endregion
 
-
+        #region Collections
+        public List<MapEntity> Entities
+        {
+            get { return Aisling.Map.EntityList; }
+        }
+        public List<AislingEntity> Aislings
+        {
+            get { return Aisling.Players; }
+        }
+        public List<Monster> Monsters
+        {
+            get { return Aisling.Monsters; }
+        }
+        public Dictionary<uint, MapEntity> EntitysToRestore
+        {
+            get;
+            set;
+        }
+        public List<Item> Items
+        {
+            get { return Aisling.Items; }
+        }
+        public List<NPC> NPCs
+        {
+            get { return Aisling.NPCs; }
+        }
+        #endregion
     }
 }

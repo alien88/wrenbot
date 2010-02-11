@@ -58,8 +58,8 @@ namespace WrenBot
                         {
                             MapInfo Info = Packet.Read<MapInfo>(0);
                             Clients[Serial].Aisling.Location.Map = Info.MapNumber;
-                            if (Clients[Serial].Aisling.Map.Number != Info.MapNumber)
-                                Clients[Serial].Aisling.Map.Entities.Clear();
+                            //if (Clients[Serial].Aisling.Map.Number != Info.MapNumber)
+                            Clients[Serial].Aisling.Map.Entities.Clear();
                             Clients[Serial].Aisling.Map.Number = Info.MapNumber;
                             Clients[Serial].Aisling.Map.Width = Info.TileX;
                             Clients[Serial].Aisling.Map.Height = Info.TileY;
@@ -109,14 +109,6 @@ namespace WrenBot
                                             );
                                     }
                                 }
-                            }
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
                             }
                         } break;
                     #endregion
@@ -247,14 +239,6 @@ namespace WrenBot
                             }
                             Clients[Serial].Aisling.Location.AbsLocation = WalkingDirection.Direction;
                             Clients[Serial].Aisling.LastBattle = DateTime.Now;
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
-                            }
                         } break;
                     #endregion
                     #region HPBar Display
@@ -285,14 +269,6 @@ namespace WrenBot
                                 Clients[Serial].Aisling.test = 0;
                                 //we hit it, so it's not pramhed
                                 Clients[Serial].Aisling.Map.Entities[EntityBar.Serial].WasPramhed = false;
-                            }
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
                             }
                         } break;
                     #endregion
@@ -358,14 +334,6 @@ namespace WrenBot
                                     Serial = Item.Serial
                                 }
                                 );
-                            }
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
                             }
                         } break;
                     #endregion
@@ -457,14 +425,6 @@ namespace WrenBot
                                     }
                                     );
                                 }
-                            }
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
                             }
                         } break;
                     #endregion
@@ -565,14 +525,6 @@ namespace WrenBot
                                 Clients[Serial].Aisling.AttackLoops = 0;
                                 Clients[Serial].Aisling.test2 = false;
                             }
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
-                            }
                         } break;
                     #endregion
                     #region Appendage
@@ -592,14 +544,6 @@ namespace WrenBot
                                 Clients[Serial].Aisling.Map.Entities[EntityDir.Serial].Location.Direction = EntityDir.FaceDirection;
                                 if (Clients[Serial].Aisling.Map.Entities[EntityDir.Serial].EntityType == MapEntity.Type.Monster)
                                     (Clients[Serial].Aisling.Map.Entities[EntityDir.Serial] as Monster).WasSuained = false;
-                            }
-                            List<uint> SerialsToRemove = new List<uint>();
-                            foreach (KeyValuePair<uint, MapEntity> KVP in Clients[Serial].Aisling.Map.Entities)
-                                if (!KVP.Value.Location.OnScreenOf(Clients[Serial].Aisling.Location) || KVP.Value.HPPercent == 0)
-                                    SerialsToRemove.Add(KVP.Value.Serial);
-                            foreach (uint Ser in SerialsToRemove)
-                            {
-                                Clients[Serial].Aisling.Map.Entities.Remove(Ser);
                             }
                         } break;
                     #endregion
@@ -765,7 +709,7 @@ namespace WrenBot
         }
         #endregion
 
-        public void _OnConnect(ProxySocket Socket, uint ClientSerial, NewProxy Proxy)
+        public void _OnConnect(ProxySocket Socket, uint ClientSerial, NewProxy Proxy, uint PSerial)
         {
             int BotClients = Clients.Count();
             if (Proxy.Clients.ContainsKey(ClientSerial))
@@ -814,7 +758,7 @@ namespace WrenBot
             listView1.Items.Add(I);
         }
 
-        public void _OnDisconnect(ProxySocket Socket, uint ClientSerial, NewProxy Proxy)
+        public void _OnDisconnect(ProxySocket Socket, uint ClientSerial, NewProxy Proxy, uint PSerial)
         {
             try
             {
@@ -825,6 +769,7 @@ namespace WrenBot
                         Proxy.Clients.Remove(ClientSerial);
                         listView1.Items.Remove(GetItemFromSocket(Socket));
                     }
+                    Clients[ClientSerial].BotForm.Close();
                     Clients.Remove(ClientSerial);
                 }
             }
@@ -834,10 +779,11 @@ namespace WrenBot
             RemoveUnwantedItems();
         }
 
-        public void _OnGameEnter(ProxySocket Socket, uint ClientSerial, NewProxy Proxy)
+        public void _OnGameEnter(ProxySocket Socket, uint ClientSerial, NewProxy Proxy, uint PSerial)
         {
             BlackMagic M = EnableMagic(Socket.Name, Socket); 
             Clients[ClientSerial].Magic = M;
+            Clients[ClientSerial].Aisling.Serial = PSerial;
         }
 
         public ListViewItem GetItemFromSocket(ProxySocket Socket)
@@ -894,6 +840,42 @@ namespace WrenBot
             }
             catch 
             {
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string n = listView1.SelectedItems[0].SubItems[0].Text;
+            var Socket = (from v in Proxy.Clients
+                          where v.Value.Name.ToLower() == n.ToLower()
+                          select v.Value).Single();
+            if (Socket != null)
+            {
+                uint ClientSerial = Socket.ConnectedSocket.ID;
+                try
+                {
+                    if (!Clients[ClientSerial].BotForm.Visible)
+                    {
+                        Clients[ClientSerial].BotForm.ClientSerial = ClientSerial;
+                        Clients[ClientSerial].BotForm.Proxy = Proxy;
+                        Clients[ClientSerial].BotForm.BaseForm = this;
+                        Clients[ClientSerial].BotForm.Socket = Socket;
+                        Invoke(new MethodInvoker(Clients[ClientSerial].BotForm.Show));
+                    }
+                    else
+                    {
+                        Invoke(new MethodInvoker(Clients[ClientSerial].BotForm.Hide));
+                    }
+                }
+                catch
+                {
+                    Clients[ClientSerial].BotForm = new BotForm();
+                    Clients[ClientSerial].BotForm.ClientSerial = ClientSerial;
+                    Clients[ClientSerial].BotForm.Proxy = Proxy;
+                    Clients[ClientSerial].BotForm.BaseForm = this;
+                    Clients[ClientSerial].BotForm.Socket = Socket;
+                    Invoke(new MethodInvoker(Clients[ClientSerial].BotForm.Show));
+                }
             }
         }
     }
