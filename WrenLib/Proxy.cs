@@ -15,7 +15,7 @@ namespace WrenLib
     public delegate void InitDelegate(ProxySocket Base, uint Serial);
     public delegate void SerialDelegate(ProxySocket Socket, uint Serial, NewProxy Proxy);
     public delegate void OnGameLogin(ProxySocket Socket, uint Serial, NewProxy Proxy, string CharacterName);
-
+    public delegate void OnPacketEvent(ProxySocket Socket, uint Serial, NewProxy Proxy, ref MemoryStream Buffer);
     public class NewProxy
     {
         private static IPEndPoint DAServer = new IPEndPoint(IPAddress.Parse("64.124.47.50"), 2610);
@@ -40,9 +40,11 @@ namespace WrenLib
         public SerialDelegate OnGameServerConnect;
         public SerialDelegate OnDisconnect;
         public OnGameLogin OnGameEnter;
+        public OnPacketEvent OnRecv;
+        public OnPacketEvent OnSend;
 
         //transform
-        private static void TransformStream(ProxySocket Socket, ref MemoryStream PacketStream, ref BinaryReader Reader, ref BinaryWriter Writer)
+        public static void TransformStream(ProxySocket Socket, ref MemoryStream PacketStream, ref BinaryReader Reader, ref BinaryWriter Writer)
         {
             if (Socket.Encryption != null)
             {
@@ -57,6 +59,21 @@ namespace WrenLib
                 Writer = new BinaryWriter(PacketStream);
             }
         }
+
+        public static void TransformStream(ProxySocket Socket, ref MemoryStream PacketStream)
+        {
+            if (Socket.Encryption != null)
+            {
+                byte[] Buffer = PacketStream.ToArray();
+                Socket.Encryption.Transform(Buffer);
+                long Position = PacketStream.Position;
+                PacketStream.Dispose();
+                PacketStream = new MemoryStream();
+                PacketStream.Write(Buffer, 0, Buffer.Length);
+                PacketStream.Seek(Position, SeekOrigin.Begin);
+            }
+        }
+
 
         //send
         private string Name = "";
@@ -106,6 +123,13 @@ namespace WrenLib
                 default: break;
             }
 
+            if (OnSend != null)
+            {
+                TransformStream(Socket, ref PacketStream, ref Reader, ref Writer);
+                OnSend(Socket, Socket.ConnectedSocket.ID, this, ref PacketStream);
+                TransformStream(Socket, ref PacketStream, ref Reader, ref Writer);
+            }
+
             Socket.PacketData = PacketStream.ToArray();
 
             if (Socket.PacketData[0] != 0x62 &&
@@ -145,6 +169,14 @@ namespace WrenLib
                     } break;
                 #endregion
             }
+
+            if (OnRecv != null)
+            {
+                TransformStream(Socket, ref PacketStream, ref Reader, ref Writer);
+                OnRecv(Socket, Socket.ConnectedSocket.ID, this, ref PacketStream);
+                TransformStream(Socket, ref PacketStream, ref Reader, ref Writer);
+            }
+
             Socket.ConnectedSocket.SendPacketRaw(PacketStream.ToArray());
         }
 

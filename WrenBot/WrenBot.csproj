@@ -63,6 +63,63 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Net\ClientStructs\Assail.cs" />
+    <Compile Include="Net\ClientStructs\ClickEntity.cs" />
+    <Compile Include="Net\ClientStructs\Direction.cs" />
+    <Compile Include="Net\ClientStructs\Group.cs" />
+    <Compile Include="Net\ClientStructs\InitiateSpellCast.cs" />
+    <Compile Include="Net\ClientStructs\Login.cs" />
+    <Compile Include="Net\ClientStructs\Look.cs" />
+    <Compile Include="Net\ClientStructs\Loot%28b%29.cs" />
+    <Compile Include="Net\ClientStructs\Refresh.cs" />
+    <Compile Include="Net\ClientStructs\SendSpellLines.cs" />
+    <Compile Include="Net\ClientStructs\SpellDelay.cs" />
+    <Compile Include="Net\ClientStructs\UseItem.cs" />
+    <Compile Include="Net\ClientStructs\UseSkill.cs" />
+    <Compile Include="Net\ClientStructs\UseSpell.cs" />
+    <Compile Include="Net\ClientStructs\UseSpell2.cs" />
+    <Compile Include="Net\ClientStructs\Walking.cs" />
+    <Compile Include="Net\ClientStructs\Whisper.cs" />
+    <Compile Include="Net\Packet.cs" />
+    <Compile Include="Net\ServerStructs\AddAisling.cs" />
+    <Compile Include="Net\ServerStructs\AddSprites.cs" />
+    <Compile Include="Net\ServerStructs\Animations.cs" />
+    <Compile Include="Net\ServerStructs\Appendage.cs" />
+    <Compile Include="Net\ServerStructs\BarMessage.cs" />
+    <Compile Include="Net\ServerStructs\Cast1LineSpell.cs" />
+    <Compile Include="Net\ServerStructs\Chat.cs" />
+    <Compile Include="Net\ServerStructs\ClientSpriteWalk.cs" />
+    <Compile Include="Net\ServerStructs\DropItem.cs" />
+    <Compile Include="Net\ServerStructs\DropSprite.cs" />
+    <Compile Include="Net\ServerStructs\EntityDirection.cs" />
+    <Compile Include="Net\ServerStructs\GroupRequest.cs" />
+    <Compile Include="Net\ServerStructs\HPBar.cs" />
+    <Compile Include="Net\ServerStructs\ItemSlotInfo.cs" />
+    <Compile Include="Net\ServerStructs\LegendInfo.cs" />
+    <Compile Include="Net\ServerStructs\Location.cs" />
+    <Compile Include="Net\ServerStructs\MapInfo.cs" />
+    <Compile Include="Net\ServerStructs\PlaySound.cs" />
+    <Compile Include="Net\ServerStructs\RemoveSlot.cs" />
+    <Compile Include="Net\ServerStructs\RemoveSprite.cs" />
+    <Compile Include="Net\ServerStructs\Serial.cs" />
+    <Compile Include="Net\ServerStructs\SingleSpell.cs" />
+    <Compile Include="Net\ServerStructs\SkillSlotInfo.cs" />
+    <Compile Include="Net\ServerStructs\SpellBar.cs" />
+    <Compile Include="Net\ServerStructs\SpellSlotInfo.cs" />
+    <Compile Include="Net\ServerStructs\SpriteAnimation.cs" />
+    <Compile Include="Net\ServerStructs\SpriteWalk.cs" />
+    <Compile Include="Net\ServerStructs\StatsStructA.cs" />
+    <Compile Include="Net\ServerStructs\StatsStructB.cs" />
+    <Compile Include="Net\ServerStructs\StatsStructC.cs" />
+    <Compile Include="Net\ServerStructs\StatsStructD.cs" />
+    <Compile Include="Net\ServerStructs\StatsUpdate.cs" />
+    <Compile Include="Net\ServerStructs\Userlist.cs" />
+    <Compile Include="Net\ServerStructs\Walking.cs" />
+    <Compile Include="Net\ServerStructs\WindowResponse.cs" />
+    <Compile Include="PathFinding\Extensions.cs" />
+    <Compile Include="PathFinding\HeuristicFormula.cs" />
+    <Compile Include="PathFinding\PathFinder.cs" />
+    <Compile Include="PathFinding\PriorityQueue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -80,9 +137,19 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="PathFinding\.svn\all-wcprops" />
+    <None Include="PathFinding\.svn\entries" />
+    <None Include="PathFinding\.svn\format" />
+    <None Include="PathFinding\.svn\text-base\Extensions.cs.svn-base" />
+    <None Include="PathFinding\.svn\text-base\HeuristicFormula.cs.svn-base" />
+    <None Include="PathFinding\.svn\text-base\PathFinder.cs.svn-base" />
+    <None Include="PathFinding\.svn\text-base\PriorityQueue.cs.svn-base" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="sotp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -95,8 +162,35 @@
     <Compile Include="SetRoles.Designer.cs">
       <DependentUpon>SetRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="specialvalues.cs" />
     <Compile Include="Types\Aisling.cs" />
+    <Compile Include="Types\AislingEntity.cs" />
+    <Compile Include="Types\Animations.cs" />
+    <Compile Include="Types\Bot.cs" />
     <Compile Include="Types\ClientRoles.cs" />
+    <Compile Include="Types\CountyList.cs" />
+    <Compile Include="Types\Item.cs" />
+    <Compile Include="Types\ItemSlot.cs" />
+    <Compile Include="Types\Location.cs" />
+    <Compile Include="Types\Map.cs" />
+    <Compile Include="Types\MapEntity.cs" />
+    <Compile Include="Types\Monster.cs" />
+    <Compile Include="Types\NPC.cs" />
+    <Compile Include="Types\Point.cs" />
+    <Compile Include="Types\Profile.cs" />
+    <Compile Include="Types\SkillSlot.cs" />
+    <Compile Include="Types\Sounds.cs" />
+    <Compile Include="Types\Spell.cs" />
+    <Compile Include="Types\SpellBar.cs" />
+    <Compile Include="Types\SpellSlot.cs" />
+    <Compile Include="Types\UserList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PathFinding\.svn\prop-base\" />
+    <Folder Include="PathFinding\.svn\props\" />
+    <Folder Include="PathFinding\.svn\tmp\prop-base\" />
+    <Folder Include="PathFinding\.svn\tmp\props\" />
+    <Folder Include="PathFinding\.svn\tmp\text-base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
